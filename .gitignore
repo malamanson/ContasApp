@@ -1,0 +1,31 @@
+# Dependências do Node
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build e cache
+android/app/build/
+ios/Pods/
+ios/build/
+*.gradle
+*.log
+
+# Arquivos de ambiente e configurações específicas de ambiente
+.env
+.env.*
+
+# Cache do sistema
+.cache/
+*.log
+*.tmp
+
+# Configurações específicas do Visual Studio Code
+.vscode/
+*.swp
+
+# Arquivos de teste do Expo
+.expo/
+.expo-shared/
+
+# Arquivos de configuração temporários do Metro
+metro.config.js.temporary
