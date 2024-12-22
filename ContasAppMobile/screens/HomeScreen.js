@@ -1,90 +1,75 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
-import axios from 'axios';
+import React from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-const HomeScreen = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const HomeScreen = ({ navigation }) => {
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>Controle Financeiro</Text>
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://192.168.100.175:5239/api/transacoes');
-        console.log(response.data); // Verifique a estrutura dos dados aqui
-        if (response.data && response.data.$values) {
-          setData(response.data.$values);
-        } else {
-          setError("Dados não encontrados.");
-        }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate('Contas')}
+            >
+                <Text style={styles.buttonText}>Gerenciar Contas</Text>
+            </TouchableOpacity>
 
-    fetchData();
-  }, []);
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate('Transacoes')}
+            >
+                <Text style={styles.buttonText}>Registrar Transações</Text>
+            </TouchableOpacity>
 
-  const renderItem = ({ item }) => (
-    <View style={styles.item}>
-      <Text style={styles.text}>Valor: {item.valor}</Text>
-      <Text style={styles.text}>Descrição: {item.descricao}</Text>
-      <Text style={styles.text}>Data: {new Date(item.data).toLocaleString()}</Text>
-    </View>
-  );
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate('Ganhos')}
+            >
+                <Text style={styles.buttonText}>Gerenciar Ganhos</Text>
+            </TouchableOpacity>
 
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
-  }
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate('Relatorios')}
+            >
+                <Text style={styles.buttonText}>Relatórios</Text>
+            </TouchableOpacity>
 
-  if (error) {
-    return <Text style={styles.error}>{error}</Text>;
-  }
-
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => item.id ? item.id.toString() : `item-${index}`} // Garantindo uma chave única
-        contentContainerStyle={styles.list}
-      />
-    </View>
-  );
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate('Configuracoes')}
+            >
+                <Text style={styles.buttonText}>Configurações</Text>
+            </TouchableOpacity>
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 50,
-    backgroundColor: '#f0f0f0',
-  },
-  list: {
-    paddingBottom: 20,
-  },
-  item: {
-    backgroundColor: '#fff',
-    padding: 15,
-    marginBottom: 10,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  text: {
-    fontSize: 16,
-    color: '#333',
-  },
-  error: {
-    color: 'red',
-    fontSize: 18,
-    textAlign: 'center',
-    marginTop: 20,
-  },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f5f5f5',
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 20,
+    },
+    button: {
+        backgroundColor: '#4CAF50',
+        paddingVertical: 15,
+        paddingHorizontal: 30,
+        borderRadius: 5,
+        marginBottom: 15,
+        width: '80%',
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
 });
 
 export default HomeScreen;
