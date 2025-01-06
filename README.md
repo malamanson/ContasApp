@@ -34,8 +34,8 @@ Este projeto é um aplicativo de controle financeiro pessoal desenvolvido em **R
 2. **Clone o Repositório**:
 
    ```bash
-   git clone https://github.com/usuario/sistema-contas-pessoais.git
-   cd sistema-contas-pessoais
+   git clone https://github.com/malamanson/ContasApp
+   cd ContasApp
    ```
 
 3. **Instale as Dependências**:
