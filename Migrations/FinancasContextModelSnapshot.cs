@@ -31,7 +31,11 @@ namespace ContasApp.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("SaldoInicial")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Tipo")
                         .HasColumnType("int");
@@ -39,6 +43,35 @@ namespace ContasApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Contas");
+                });
+
+            modelBuilder.Entity("Ganho", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("ContaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("Valor")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContaId");
+
+                    b.ToTable("Ganhos");
                 });
 
             modelBuilder.Entity("Transacao", b =>
@@ -52,12 +85,16 @@ namespace ContasApp.Migrations
                     b.Property<int>("ContaId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ContaId1")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("IsEntrada")
                         .HasColumnType("bit");
@@ -69,16 +106,31 @@ namespace ContasApp.Migrations
 
                     b.HasIndex("ContaId");
 
+                    b.HasIndex("ContaId1");
+
                     b.ToTable("Transacoes");
+                });
+
+            modelBuilder.Entity("Ganho", b =>
+                {
+                    b.HasOne("Conta", "Conta")
+                        .WithMany()
+                        .HasForeignKey("ContaId");
+
+                    b.Navigation("Conta");
                 });
 
             modelBuilder.Entity("Transacao", b =>
                 {
-                    b.HasOne("Conta", "Conta")
+                    b.HasOne("Conta", null)
                         .WithMany("Transacoes")
                         .HasForeignKey("ContaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Conta", "Conta")
+                        .WithMany()
+                        .HasForeignKey("ContaId1");
 
                     b.Navigation("Conta");
                 });
